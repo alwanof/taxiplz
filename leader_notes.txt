@@ -1,0 +1,6 @@
+Delete following from permissions table :
+- access-desktop
+- access-drivers
+
+* Create following :
++ access_products

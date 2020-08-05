@@ -1,0 +1,2 @@
+public\assets cropConfig.js profile-upload.php
+
