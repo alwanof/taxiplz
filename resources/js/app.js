@@ -68,7 +68,7 @@ const CONFIG = {
     //FULL_PATH: 'http://' + window.location.hostname + '/taxi/public',
     API_URL: http + window.location.hostname + '/taxiplzz/public/api/',
     PATH: '/taxiplzz/public',
-    FULL_PATH: 'http://' + window.location.hostname + '/taxiplzz/public',
+    FULL_PATH: http + window.location.hostname + '/taxiplzz/public',
     LANG: translations,
     PARSE: Parse,
     LIVEQ: client,
