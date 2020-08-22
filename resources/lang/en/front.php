@@ -2,8 +2,8 @@
 
 return [
     'general'=>[
-        'alt'=>'Meaza Food',
-        'title'=>'Meaza Food',
+        'alt'=>'Taxi',
+        'title'=>'Taxi',
     ],
     'languages'=>[
         'title'=>'languages',
@@ -14,7 +14,7 @@ return [
         'swdish',
         'Deutschland'
     ],
-    'title'=>'Meaza Food',
+    'title'=>'Taxi',
     'default_page_name'=>'Home',
     'menu'=>[
         'menu_01'=>'home',

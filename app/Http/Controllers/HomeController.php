@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Driver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Gate;
 
 class HomeController extends Controller
 {
@@ -25,22 +26,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-
-        $limit = (auth()->user()->getSetting('notifications-show-limit')) ? auth()->user()->getSetting('notifications-show-limit')->value : 10;
-
-
-
-        $data = [
-            'allNoti' => auth()->user()->notifications->take($limit),
-            'newNoti' => auth()->user()->unreadNotifications->take($limit),
-            'oldNoti' => auth()->user()->readNotifications->take($limit),
-
+        $acl = [
+            'give_permissions' => (Gate::allows('give-permissions')) ? true : false,
         ];
+        //$drivers = Driver::latest()->get();
 
 
-        auth()->user()->unreadNotifications->markAsRead();
-        return view('home', compact(['data']));
+        return view('home', compact(['acl']));
     }
 
     public function lang($locale)

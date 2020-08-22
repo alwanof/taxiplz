@@ -1,11 +1,11 @@
 @extends('layouts.master')
-@section('title', 'Dashboard')
+@section('title', __('home.title'))
 
 @section('nav')
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>{{ __('noticenter.title') }}</h1>
+                <h1>{{ __('home.title') }}</h1>
             </div>
 
         </div>
@@ -14,7 +14,9 @@
 @section('content')
     <!-- Default box -->
     <div class="container">
-        <h1>home</h1>
+
+        <home :acl="{{ json_encode($acl) }}" 
+            :lang={{ json_encode(app()->getLocale()) }} :auth="{{ json_encode(Auth::user()) }}"></home>
 
 
     </div>

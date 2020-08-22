@@ -79,7 +79,7 @@ class UserController extends Controller
     public function destroy($id)
     {
 
-        $user=User::find($id);
+        $user = User::find($id);
         $user->syncRoles([]);
         $user->settings()->delete();
         $user->delete();

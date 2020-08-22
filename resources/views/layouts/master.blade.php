@@ -157,6 +157,17 @@
 
                             </ul>
                         </li>
+                        @can('access_drivers')
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('drivers.index') }}">
+                                    <i class="nav-icon fas fa-taxi"></i>
+                                    <p>
+                                        {{ __('drivers.title') }}
+
+                                    </p>
+                                </a>
+                            </li>
+                        @endcan
 
                         <hr>
                         <li class="nav-item">

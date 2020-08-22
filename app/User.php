@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password'
     ];
     protected $appends = ['avatar', 'getroles'];
 
@@ -72,28 +72,9 @@ class User extends Authenticatable
         return $this->hasMany(Setting::class);
     }
 
-    public function orders()
+
+    public function drivers()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Driver::class);
     }
-
-    public function bills()
-    {
-        return $this->hasMany(Bill::class);
-    }
-
-    public function balance(){
-        $dept=0;
-        $credit=0;
-        foreach ($this->bills as $trans){
-            if($trans->amount>0){
-                $dept=$dept+$trans->amount;
-            }else{
-                $credit=$credit+$trans->amount;
-            }
-        }
-        return -1*($dept+$credit);
-    }
-
-
 }
