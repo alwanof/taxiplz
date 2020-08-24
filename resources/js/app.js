@@ -60,7 +60,8 @@ let http = 'https://';
 if (location.protocol !== 'https:') {
     http = 'http://';
 }
-
+// ssh root@142.93.174.231
+// cd /home/marasiel.com/public_html/taxiplzz
 const CONFIG = {
 
     /*API_URL: http + window.location.hostname + '/taxi/public/api/',

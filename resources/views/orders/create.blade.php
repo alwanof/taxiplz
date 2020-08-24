@@ -28,9 +28,20 @@
                 </div>
                 <div class="form-group">
                     <label for="address">Addrerss:</label>
-                    <input type="text" class="form-control" placeholder="Enter your address" name="address"
-                        value="{{ $data['address'] }}" required>
-                    <div class="invalid-feedback">Please fill out this field.</div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <a href="#" onclick="return geolocation()">
+                                    <i class="fas fa-compress text-primary"></i>
+                                </a>
+                            </span>
+                        </div>
+
+                        <input type="text" class="form-control" placeholder="Enter your address" id="address" name="address"
+                            value="{{ $data['address'] }}" required>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+
                 </div>
 
 
@@ -48,5 +59,30 @@
 @endsection
 
 @section('js')
+    <script>
+        let btn = true;
 
+        function geolocation() {
+            if (btn == false) {
+                return false;
+            }
+            navigator.geolocation.getCurrentPosition((position) => {
+                center = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                }
+
+
+                $.getJSON(
+                    'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + center.lat + ',' + center
+                    .lng + '&key=AIzaSyANYVpeOpsNN4DqdKR4AKAyd03IQ3_9PvU',
+                    function(result) {
+                        document.getElementById('address').value = result.results[0].formatted_address;
+                        btn = false;
+                    });
+            });
+            return false;
+        }
+
+    </script>
 @endsection
