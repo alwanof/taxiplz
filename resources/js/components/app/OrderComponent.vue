@@ -11,6 +11,53 @@
       </div>
       <div class="card-body text-center">
         <h5 class="card-title font-weight-bold">{{ request.user.name }}</h5>
+        <table class="table" v-if="feed.data.status">
+          <tr>
+            <td>
+              <img :src="fullPath+'/assets/dist/img/fidget-spinner.gif'" width="42" />
+            </td>
+            <td>
+              <img
+                :src="fullPath+'/assets/dist/img/analyze.gif'"
+                width="42"
+                v-show="[1,11,2,21,].indexOf(feed.data.status.value)>=0"
+              />
+              <img
+                :src="fullPath+'/assets/dist/img/disappointed.gif'"
+                width="42"
+                v-show="[3,4].indexOf(feed.data.status.value)>=0"
+              />
+            </td>
+            <td>
+              <img
+                :src="fullPath+'/assets/dist/img/check-all.gif'"
+                width="42"
+                v-show="[11,2,21].indexOf(feed.data.status.value)>=0"
+              />
+            </td>
+            <td>
+              <img
+                :src="fullPath+'/assets/dist/img/good.gif'"
+                width="42"
+                v-show="[2,21].indexOf(feed.data.status.value)>=0"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <div class="progress">
+                <div
+                  :class="'progress-bar progress-bar-striped bg-'+status(feed.data.status.value).color"
+                  role="progressbar"
+                  :style="'width: '+status(feed.data.status.value).per"
+                  :aria-valuenow="status(feed.data.status.value).perx"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >{{ status(feed.data.status.value).text }}</div>
+              </div>
+            </td>
+          </tr>
+        </table>
         <table class="table">
           <thead>
             <tr>
@@ -210,7 +257,7 @@ export default {
     },
     listen() {
       const query = new CONFIG.PARSE.Query("orders");
-      //const driverQuery = new CONFIG.PARSE.Query("User");
+      const driverQuery = new CONFIG.PARSE.Query("User");
       CONFIG.LIVEQ.open();
       var subscription = CONFIG.LIVEQ.subscribe(query);
       subscription.on("update", (orderDoc) => {
@@ -220,17 +267,17 @@ export default {
           this.forceRender = Math.random();
         }
       });
-      /*var driverSubscription = CONFIG.LIVEQ.subscribe(driverQuery);
+      var driverSubscription = CONFIG.LIVEQ.subscribe(driverQuery);
       driverSubscription.on("update", (driverDoc) => {
         let place = {
           lat: driverDoc.attributes.location.latitude,
           lng: driverDoc.attributes.location.longitude,
-        };*/
-      /*this.center = {
+        };
+        this.center = {
           lat: DRIVER.attributes.location.latitude,
           lng: DRIVER.attributes.location.longitude,
-        };*/
-      /*this.markers = {
+        };
+        this.markers = {
           id: driverDoc.id,
           name: driverDoc.attributes.name,
           position: place,
@@ -239,7 +286,7 @@ export default {
         };
         this.forceRender = Math.random();
         console.log(driverDoc);
-      });*/
+      });
     },
     trackDriver: async function (order) {
       this.trackingmMap = true;
@@ -297,34 +344,50 @@ export default {
         case 0:
           result.text = "WAITING..";
           result.color = "warning";
+          result.per = "25%";
+          result.perx = "25";
           break;
         case 1:
-          result.text = "FORWARDED";
-          result.color = "warning";
+          result.text = "PROCCESSING";
+          result.color = "info";
+          result.per = "50%";
+          result.perx = "50";
           break;
         case 11:
           result.text = "CONFIRMED";
           result.color = "success";
+          result.per = "75%";
+          result.perx = "75";
           break;
         case 2:
           result.text = "DONE";
-          result.color = "secondary";
+          result.color = "dark";
+          result.per = "100%";
+          result.perx = "100";
           break;
         case 21:
-          result.text = "DONE BY SYSTEM";
+          result.text = "DONE";
           result.color = "dark";
+          result.per = "100%";
+          result.perx = "100";
           break;
         case 3:
-          result.text = "No Taxi Availabe";
+          result.text = "NOT AVAILABLE";
           result.color = "danger";
+          result.per = "50%";
+          result.perx = "50";
           break;
         case 4:
           result.text = "NO RESPONSE";
-          result.color = "info";
+          result.color = "danger";
+          result.per = "50%";
+          result.perx = "50";
           break;
         default:
-          result.text = "Processing";
-          result.color = "primary";
+          result.text = "PROCCESSED";
+          result.color = "secondary";
+          result.per = "100%";
+          result.perx = "100";
           break;
       }
 

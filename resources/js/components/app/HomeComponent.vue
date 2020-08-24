@@ -246,7 +246,8 @@ export default {
       this.orders = [];
       const orders = CONFIG.PARSE.Object.extend("orders");
       const query = new CONFIG.PARSE.Query(orders);
-      //query.equalTo("user.email", this.auth.email);
+      query.equalTo("user.email", this.auth.email);
+      query.notEqualTo("status.value", 5);
       query.limit(50);
       query.descending("createdAt");
       query.find().then(

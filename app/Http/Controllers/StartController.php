@@ -32,6 +32,7 @@ class StartController extends Controller
         ];
 
 
+
         return view('orders.create', compact(['data']));
     }
     private function cookie($key, $value)

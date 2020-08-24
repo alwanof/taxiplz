@@ -63,9 +63,9 @@ if (location.protocol !== 'https:') {
 
 const CONFIG = {
 
-    //API_URL: http + window.location.hostname + '/taxi/public/api/',
-    //PATH: '/taxi/public',
-    //FULL_PATH: 'http://' + window.location.hostname + '/taxi/public',
+    /*API_URL: http + window.location.hostname + '/taxi/public/api/',
+    PATH: '/taxi/public',
+    FULL_PATH: 'http://' + window.location.hostname + '/taxi/public',*/
     API_URL: http + window.location.hostname + '/taxiplzz/public/api/',
     PATH: '/taxiplzz/public',
     FULL_PATH: http + window.location.hostname + '/taxiplzz/public',

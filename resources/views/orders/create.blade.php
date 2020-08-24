@@ -10,6 +10,7 @@
         </div>
         <div class="card-body text-center">
             <h5 class="card-title font-weight-bold">{{ $data['user']->name }}</h5>
+            @include('alert')
             <form action="{{ route('order.compose') }}" method="POST" class="was-validated text-left">
                 @csrf
                 <input type="hidden" name="officeEmail" value="{{ $data['user']->email }}">
