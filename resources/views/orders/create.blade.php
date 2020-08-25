@@ -66,6 +66,9 @@
             if (btn == false) {
                 return false;
             }
+            if (!("geolocation" in navigator)) {
+                return false;
+            }
             navigator.geolocation.getCurrentPosition((position) => {
                 center = {
                     lat: position.coords.latitude,

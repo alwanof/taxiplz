@@ -110,7 +110,7 @@
               <td>
                 {{feed.data.driver.name}}
                 <br />
-                <a :href="'tel:'+feed.data.phone">{{feed.data.phone}}</a>
+                <a :href="'tel:'+feed.data.driver.phone">{{feed.data.driver.phone}}</a>
               </td>
               <td>{{feed.data.driver.taxi}} {{feed.data.driver.taxiColor}}</td>
               <td>
