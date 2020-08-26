@@ -54,6 +54,7 @@
 
                 @php $locale = session()->get('locale'); @endphp
 
+                <notification :auth="{{ json_encode(Auth::user()) }}"></notification>
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="fa fa-globe"></i>

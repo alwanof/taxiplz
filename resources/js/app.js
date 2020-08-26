@@ -23,6 +23,14 @@ var client = new Parse.LiveQueryClient({
 //************************* */
 
 window.Vue = require('vue');
+import VueNativeNotification from 'vue-native-notification'
+
+Vue.use(VueNativeNotification, {
+    // Automatic permission request before
+    // showing notification (default: true)
+    requestOnNotify: true
+})
+
 Vue.use(VueGoogleMaps, {
     load: {
         key: 'AIzaSyANYVpeOpsNN4DqdKR4AKAyd03IQ3_9PvU',
@@ -43,6 +51,7 @@ Vue.component('settings-component', require('./components/SettingsComponent.vue'
 Vue.component('home', require('./components/app/HomeComponent.vue').default);
 Vue.component('drivers', require('./components/app/DriversComponent.vue').default);
 Vue.component('order', require('./components/app/OrderComponent.vue').default);
+Vue.component('notification', require('./components/app/NotificationComponent.vue').default);
 
 function coolNumber(num) {
     if (num < 1000) {

@@ -249,6 +249,15 @@ export default {
           const newOrder = new orders();
           newOrder.set(order);
           await newOrder.save();
+
+          await this.createNoti({
+            title: "New Order!",
+            body: order.customer.name + " needs a taxi",
+            from: order.customer,
+            to: order.user,
+            status: { value: 0, timestamp: new Date() },
+          });
+
           this.loading = false;
         }
       } catch (error) {
@@ -287,6 +296,12 @@ export default {
         this.forceRender = Math.random();
         console.log(driverDoc);
       });
+    },
+    createNoti(data) {
+      const noti = CONFIG.PARSE.Object.extend("notifications");
+      const newNoti = new noti();
+      newNoti.set(data);
+      newNoti.save();
     },
     trackDriver: async function (order) {
       this.trackingmMap = true;
