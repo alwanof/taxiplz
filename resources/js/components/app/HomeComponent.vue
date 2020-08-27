@@ -371,6 +371,8 @@ export default {
           {
             headers: {
               "Content-Type": "application/json",
+              Referer: "https://marasiel.com/",
+              Origin: "https://marasiel.com/",
               Authorization:
                 "key=AAAAAM6DuQo:APA91bG88dJ6IZ2GULlgR-goGhxI9cVaKRB3x9GT1CQ8R52z_rkBalZqohnCWNC_lD0yE2fPG5nB83HQTqFVVihKsvv4i-9ZPgQzPlKWxgVwOTmr4PX6gNvoxdK3fmnYkM1KOi9V-i28",
             },
