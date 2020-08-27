@@ -283,8 +283,8 @@ export default {
           lng: driverDoc.attributes.location.longitude,
         };
         this.center = {
-          lat: DRIVER.attributes.location.latitude,
-          lng: DRIVER.attributes.location.longitude,
+          lat: driverDoc.attributes.location.latitude,
+          lng: driverDoc.attributes.location.longitude,
         };
         this.markers = {
           id: driverDoc.id,
