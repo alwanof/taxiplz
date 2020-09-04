@@ -161,6 +161,18 @@
 
                             </ul>
                         </li>
+                        @can('access_members')
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('users.members') }}">
+                                    <i class="nav-icon fa fa-users"></i>
+                                    <p>
+                                        {{ __('members.title') }}
+
+                                    </p>
+                                </a>
+                            </li>
+                        @endcan
+
                         @can('access_drivers')
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('drivers.index') }}">

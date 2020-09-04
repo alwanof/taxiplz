@@ -35,4 +35,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('search/drivers', 'API\DriverController@search');
     Route::get('search/configs', 'API\ConfigurationController@search');
     Route::get('search/settings', 'API\SettingController@search');
+    Route::apiResource('members', 'API\MemberController', ['except' => ['create', 'edit', 'show']]);
+    Route::get('search/members', 'API\MemberController@search');
 });

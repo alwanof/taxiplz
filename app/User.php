@@ -25,9 +25,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password'
+        'name', 'email', 'password', 'level', 'ref'
     ];
-    protected $appends = ['avatar', 'getroles'];
+    protected $appends = ['avatar', 'getroles', 'parent', 'refuser'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -54,6 +54,25 @@ class User extends Authenticatable
         $path = Storage::exists('/public/users/' . $this->id . '.jpg');
         $avatar = ($path) ? asset('storage/users/' . $this->id . '.jpg') : asset('storage/users/0.jpg');
         return $avatar;
+    }
+    public function getRefuserAttribute()
+    {
+        if ($this->ref == 0) {
+            return false;
+        }
+        return User::find($this->ref);
+    }
+    public function getParentAttribute()
+    {
+        $parents = [
+            'agent' => 0,
+        ];
+
+        if ($this->level == 2) {
+            $parents['agent'] = User::findOrFail($this->ref);;
+        }
+
+        return $parents;
     }
 
     public function getGetrolesAttribute()

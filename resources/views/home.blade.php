@@ -15,8 +15,8 @@
     <!-- Default box -->
     <div class="container">
 
-        <home :acl="{{ json_encode($acl) }}" 
-            :lang={{ json_encode(app()->getLocale()) }} :auth="{{ json_encode(Auth::user()) }}"></home>
+        <home :acl="{{ json_encode($acl) }}" :geo="{{ json_encode($geo) }}" :lang={{ json_encode(app()->getLocale()) }}
+            :auth="{{ json_encode(Auth::user()) }}"></home>
 
 
     </div>

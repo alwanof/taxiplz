@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-lg-12">
-        <div class="card card-primary card-outline">
+        <div class="card card-primary card-outline" v-if="acl.access_drivers_map">
           <div class="card-header">
             <button
               type="button"
@@ -33,7 +33,111 @@
         </div>
       </div>
 
-      <div class="card card-primary card-outline col-lg-12">
+      <!-- hot Orders sheet -->
+      <div class="card card-danger card-outline col-lg-12" v-if="acl.access_orders_sheet">
+        <div class="card-header">
+          <i class="fas fa-cog fa-spin px-2 text-primary" v-show="loading"></i>
+          <span v-html="forceRender" v-show="false"></span>
+          <div class="card-tools">
+            <div class="input-group input-group-sm">
+              <input
+                type="text"
+                name="table_search"
+                v-model="keywords"
+                class="form-control float-right"
+                :placeholder=" local[lang+'.users']['search'] "
+              />
+
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-default">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0 table-responsive">
+          <table class="table table-striped table-hover table-head-fixed">
+            <thead>
+              <tr>
+                <th>OID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Date</th>
+                <th>Action</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="order in hotOrders"
+                :key="order.id"
+                :class="'table-'+status(order.data.status.value).color"
+              >
+                <td>{{ order.id.substr(order.id.length - 4) }}</td>
+                <td>{{order.data.customer.name}}</td>
+                <td>{{order.data.customer.phone}}</td>
+                <td>
+                  <span
+                    :title="order.data.customer.address"
+                  >{{order.data.customer.address.substring(order.data.customer.address.length-15, 15)}}</span>
+                </td>
+                <td
+                  :title="order.data.status.timestamp"
+                >{{order.data.status.timestamp | moment("from", "now")}}</td>
+                <td>
+                  <span v-show="[0,12,13].indexOf(order.data.status.value) >= 0">
+                    <div class="input-group">
+                      <select
+                        class="form-control"
+                        v-model="driver"
+                        @click="driversFeed(order.data)"
+                      >
+                        <option value="0" disabled selected>Seelct Driver</option>
+                        <option
+                          v-for="driver in drivers"
+                          :key="driver.id"
+                          :value="driver.id"
+                        >{{ driver.data.taxiCode }} | {{ driver.data.name }} {{driver.distance}}km</option>
+                      </select>
+                      <span class="input-group-btn">
+                        <button
+                          class="btn btn-warning"
+                          type="button"
+                          @click="pickUp(order)"
+                          tabindex="-1"
+                        >
+                          <i class="fas fa-angle-double-right" v-show="!findingDrivers"></i>
+                          <i class="fas fa-cog fa-spin px-2 text-primary" v-show="findingDrivers"></i>
+                        </button>
+                        <button
+                          class="btn btn-danger"
+                          type="button"
+                          @click="reject(order)"
+                          tabindex="-1"
+                        >
+                          <i class="fas fa-ban"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </span>
+                </td>
+                <td>
+                  <span>
+                    <span
+                      :class="'badge badge-'+status(order.data.status.value).color"
+                    >{{ status(order.data.status.value).text }}</span>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- /hotOrders -->
+
+      <div class="card card-primary card-outline col-lg-12" v-if="acl.access_orders_sheet">
         <div class="card-header">
           <i class="fas fa-cog fa-spin px-2 text-primary" v-show="loading"></i>
           <span v-html="forceRender" v-show="false"></span>
@@ -143,7 +247,7 @@ import CONFIG from "../../app";
 
 export default {
   name: "HomeComponent",
-  props: ["acl", "lang", "auth"],
+  props: ["acl", "lang", "auth", "geo"],
   data() {
     return {
       path: CONFIG.PATH,
@@ -153,6 +257,7 @@ export default {
       findingDrivers: false,
       keywords: null,
       orders: [],
+      hotOrders: [],
       drivers: [],
       driver: 0,
       center: {
@@ -165,10 +270,10 @@ export default {
   },
   created() {
     this.listen();
-    this.geolocation();
+    //this.geolocation();
 
     this.getResults();
-    //this.getDrivers();
+    this.getHotResults();
   },
   watch: {
     keywords(after, before) {
@@ -214,7 +319,7 @@ export default {
           }
         }
       );
-      return driversFeed;
+      return drivers;
     },
     getDrivers() {
       this.loading = true;
@@ -247,6 +352,7 @@ export default {
       const orders = CONFIG.PARSE.Object.extend("orders");
       const query = new CONFIG.PARSE.Query(orders);
       query.equalTo("user.email", this.auth.email);
+      query.equalTo("type", 0);
       query.notEqualTo("status.value", 5);
       query.limit(50);
       query.descending("createdAt");
@@ -255,6 +361,32 @@ export default {
           if (typeof document !== "undefined")
             results.forEach((element) => {
               this.orders.push({ id: element.id, data: element.attributes });
+            });
+          this.loading = false;
+        },
+        (error) => {
+          if (typeof document !== "undefined") {
+            toastr["error"](this.local[this.lang + ".alerts"]["error"], error);
+            this.loading = false;
+          }
+        }
+      );
+    },
+    getHotResults() {
+      this.loading = true;
+      this.hotOrders = [];
+      const orders = CONFIG.PARSE.Object.extend("orders");
+      const query = new CONFIG.PARSE.Query(orders);
+      query.equalTo("user.email", this.auth.email);
+      query.equalTo("type", 1);
+      query.notEqualTo("status.value", 5);
+      query.limit(50);
+      query.descending("createdAt");
+      query.find().then(
+        (results) => {
+          if (typeof document !== "undefined")
+            results.forEach((element) => {
+              this.hotOrders.push({ id: element.id, data: element.attributes });
             });
           this.loading = false;
         },
@@ -315,18 +447,49 @@ export default {
       var subscription = CONFIG.LIVEQ.subscribe(query);
 
       subscription.on("create", (orderDoc) => {
-        let data = { id: orderDoc.id, data: orderDoc.attributes };
-        this.orders.unshift(data);
+        if (orderDoc.attributes.user) {
+          if (orderDoc.attributes.user.email == this.auth.email) {
+            let data = { id: orderDoc.id, data: orderDoc.attributes };
+            this.orders.unshift(data);
+          }
+        } else {
+          let range = this.distance(
+            this.geo.lng,
+            this.geo.lat,
+            orderDoc.get("customer").location.lat,
+            orderDoc.get("customer").location.lng,
+            "km"
+          );
+          if (range < 100) {
+            let data = { id: orderDoc.id, data: orderDoc.attributes };
+            this.hotOrders.unshift(data);
+          }
+        }
       });
       subscription.on("update", (orderDoc) => {
         let index = this.orders.findIndex((o) => o.id === orderDoc.id);
         let data = { id: orderDoc.id, data: orderDoc.attributes };
         this.orders[index] = data;
+
+        let index1 = this.hotOrders.findIndex((o) => o.id === orderDoc.id);
+        let data1 = { id: orderDoc.id, data: orderDoc.attributes };
+        if (orderDoc.attributes.user) {
+          if (orderDoc.attributes.user.email == this.auth.email) {
+            this.hotOrders[index1] = data1;
+          } else {
+            this.hotOrders.splice(index1, 1);
+          }
+        }
+
         this.forceRender = Math.random();
       });
       subscription.on("delete", (orderDoc) => {
         let index = this.orders.findIndex((o) => o.id === orderDoc.id);
         this.orders.splice(index, 1);
+
+        let index1 = this.hotOrders.findIndex((o) => o.id === orderDoc.id);
+        this.hotOrders.splice(index1, 1);
+
         this.forceRender = Math.random();
       });
     },
@@ -350,12 +513,22 @@ export default {
     },*/
     pickUp: async function (order) {
       this.loading = true;
+
       let index = this.drivers.findIndex((o) => o.id === this.driver);
       const orders = CONFIG.PARSE.Object.extend("orders");
       const query = new CONFIG.PARSE.Query(orders);
+
       await query.get(order.id).then((object) => {
         object.set("status", { timestamp: new Date(), value: 1 });
         object.set("driver", this.drivers[index].data);
+        if (!order.user) {
+          object.set("user", {
+            name: this.auth.name,
+            email: this.auth.email,
+            avatar: this.auth.avatar,
+          });
+          object.set("agent", this.auth.parent.agent.email);
+        }
         object.save();
       });
       await axios
@@ -364,7 +537,7 @@ export default {
           {
             to: this.drivers[index].data.token,
             notification: {
-              title: "New " + order.data.user.name + " Order",
+              title: "New " + this.auth.name + " Order's",
               body: order.data.customer.name + " needs a taxi",
             },
           },
@@ -400,10 +573,19 @@ export default {
     search() {},
     trackDrivers: async function () {
       this.loading = true;
+      await this.geolocation();
       this.markers = [];
       const driver = CONFIG.PARSE.Object.extend("User");
       const driverQuery = new CONFIG.PARSE.Query(driver);
-      driverQuery.equalTo("firm.email", this.auth.email);
+      switch (this.auth.level) {
+        case 2:
+          driverQuery.equalTo("firm.email", this.auth.email);
+          break;
+        case 1:
+          driverQuery.equalTo("agent", this.auth.email);
+          break;
+      }
+
       let DRIVERS = await driverQuery.find();
       if (typeof document !== "undefined") {
         DRIVERS.forEach((DRIVER) => {

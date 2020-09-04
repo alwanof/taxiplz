@@ -63,29 +63,19 @@ class UserController extends Controller
 
 
 
-    public function testo()
+    public function members()
     {
-        //https://docs.spatie.be/laravel-permission/v3/basic-usage/basic-usage/
-        $user = User::find(3);
-        $newUser = User::find(5);
-        $users = User::with('Settings')->where('id', '!=', $newUser->id)->where('id', '!=', $user->id)->get();
-        $users_collections = [];
-        foreach ($users as $user) {
-            if ($user->settings()->where('name', 'receive-noti-4new-users')->first()) {
-                if ($user->settings()->where('name', 'receive-noti-4new-users')->first()->value == 1) {
-                    $users_collections[] = $user;
-                }
-            }
+        $levels = [];
+        $user = auth()->user();
+        switch ($user->level) {
+            case 0:
+                $levels = [1, 2];
+                break;
+            case 1:
+                $levels = [2];
+                break;
         }
 
-
-
-        Notification::send($users_collections, new NewUserCreatedDB($user, $newUser));
-
-        //return auth()->user()->getSetting('notifications-show-limit');
-
-
-
-        //event(new UserHasRemoved($user));
+        return view('members.index', compact(['levels']));
     }
 }

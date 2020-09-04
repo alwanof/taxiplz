@@ -16,11 +16,12 @@ class StartController extends Controller
         return 'ok';
     }
 
-    function create($office, $name = null, $phone = null, $address = null)
+    function create($office = null, $name = null, $phone = null, $address = null)
     {
 
 
-        $user = User::where('email', $office)->firstOrFail();
+
+        $user = optional(User::where('email', $office))->first();
 
 
 
@@ -30,6 +31,8 @@ class StartController extends Controller
             'phone' => $this->cookie('phone', $phone),
             'address' => $this->cookie('address', $address),
         ];
+
+
 
 
 
@@ -58,13 +61,15 @@ class StartController extends Controller
             'phone' => 'required|min:8|max:22',
             'address' => 'required|min:10|max:80'
         ]);
-        $user = User::where('email', $request->officeEmail)->firstOrFail();
+        $user = optional(User::where('email',  $request->officeEmail))->first();;
+
         $data = [
             'session' => session()->getId(),
             'user' => $user,
             'name' => $request->name,
             'phone' => $request->phone,
             'address' => $request->address,
+            'agentEmail' => $request->agentEmail,
 
         ];
         return view('orders.compose', compact(['data']));

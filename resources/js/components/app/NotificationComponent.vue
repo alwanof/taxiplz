@@ -70,13 +70,15 @@ export default {
       //CONFIG.LIVEQ.open();
       var subscription = CONFIG.LIVEQ.subscribe(query);
       subscription.on("create", (notiDoc) => {
-        if (notiDoc.get("to").email == this.auth.email) {
-          console.log(notiDoc.get("to").email);
-          this.feeds.unshift(notiDoc);
-          this.notify({
-            title: notiDoc.get("title"),
-            body: notiDoc.get("body"),
-          });
+        if (notiDoc.get("to")) {
+          if (notiDoc.get("to").email == this.auth.email) {
+            console.log(notiDoc.get("to").email);
+            this.feeds.unshift(notiDoc);
+            this.notify({
+              title: notiDoc.get("title"),
+              body: notiDoc.get("body"),
+            });
+          }
         }
       });
     },

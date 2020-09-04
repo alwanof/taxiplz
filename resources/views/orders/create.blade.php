@@ -5,15 +5,18 @@
 
     <div class="card">
         <div class="card-header text-center" style="background-color: #ffa500">
-            <img class="img-thumbnail rounded-circle" src="{{ $data['user']->avatar }}" alt="..."
-                style="margin-bottom: -32px;" />
+            <img class="img-thumbnail rounded-circle" src="{{ $data['user']->avatar ?? asset('storage/users/0.jpg') }}"
+                alt="..." style="margin-bottom: -32px;" />
         </div>
         <div class="card-body text-center">
-            <h5 class="card-title font-weight-bold">{{ $data['user']->name }}</h5>
+            <h5 class="card-title font-weight-bold">{{ $data['user']->name ?? 'Multi-Offices' }}</h5>
             @include('alert')
+
             <form action="{{ route('order.compose') }}" method="POST" class="was-validated text-left">
                 @csrf
-                <input type="hidden" name="officeEmail" value="{{ $data['user']->email }}">
+                <input type="hidden" name="officeEmail" value="{{ $data['user']->email ?? 'x@x.com' }}">
+                <input type="hidden" name="agentEmail" value="{{ $data['user']->parent['agent']->email ?? null }}">
+
                 <div class="form-group">
                     <label for="name">Name:</label>
                     <input type="text" class="form-control" placeholder="Enter your name" name="name"

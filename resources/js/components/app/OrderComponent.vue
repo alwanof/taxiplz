@@ -4,13 +4,13 @@
       <div class="card-header text-center" style="background-color: #ffa500">
         <img
           class="img-thumbnail rounded-circle"
-          :src="fullPath+'/storage/users/'+request.user.id+'.jpg'"
+          :src="((feed.data.user) ? feed.data.user.avatar :fullPath+'/storage/users/0.jpg')"
           alt="..."
           style="margin-bottom: -32px;"
         />
       </div>
       <div class="card-body text-center">
-        <h5 class="card-title font-weight-bold">{{ request.user.name }}</h5>
+        <h5 class="card-title font-weight-bold">{{ (feed.data.user) ? feed.data.user.name :'none' }}</h5>
         <table class="table" v-if="feed.data.status">
           <tr>
             <td>
@@ -198,7 +198,7 @@ export default {
         const query = new CONFIG.PARSE.Query(orders);
         query.containedIn("status.value", [0, 1, 11, 3, 4]);
         query.equalTo("session", this.request.session);
-        query.equalTo("user.email", this.request.user.email);
+        //query.equalTo("user.email", this.request.user.email);
         query.descending("createdAt");
 
         let q = await query.first();
@@ -230,6 +230,7 @@ export default {
           order.session = this.request.session;
           order.enableTracking = 0;
           order.timestamp = new Date();
+          order.type = 0;
 
           order.customer = {
             name: this.request.name,
@@ -237,10 +238,17 @@ export default {
             address: this.request.address,
             location: this.center,
           };
-          order.user = {
-            name: this.request.user.name,
-            email: this.request.user.email,
-          };
+          order.agent = this.request.agentEmail;
+
+          if (this.request.user) {
+            order.user = {
+              name: this.request.user.name,
+              email: this.request.user.email,
+            };
+          } else {
+            order.user = null;
+            order.type = 1;
+          }
 
           order.status = {
             timestamp: new Date(),

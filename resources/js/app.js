@@ -52,6 +52,8 @@ Vue.component('home', require('./components/app/HomeComponent.vue').default);
 Vue.component('drivers', require('./components/app/DriversComponent.vue').default);
 Vue.component('order', require('./components/app/OrderComponent.vue').default);
 Vue.component('notification', require('./components/app/NotificationComponent.vue').default);
+Vue.component('members-sheet', require('./components/app/MembersSheetComponent.vue').default);
+
 
 function coolNumber(num) {
     if (num < 1000) {

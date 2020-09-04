@@ -27,12 +27,17 @@ class HomeController extends Controller
     public function index()
     {
         $acl = [
-            'give_permissions' => (Gate::allows('give-permissions')) ? true : false,
+            'access_orders_sheet' => (Gate::allows('access_orders_sheet')) ? true : false,
+            'access_drivers_map' => (Gate::allows('access_drivers_map')) ? true : false,
         ];
         //$drivers = Driver::latest()->get();
+        $geo = [
+            'lng' => auth()->user()->getSetting('location.longitude')->value ?? 0,
+            'lat' => auth()->user()->getSetting('location.latitude')->value ?? 0,
+        ];
 
 
-        return view('home', compact(['acl']));
+        return view('home', compact(['acl', 'geo']));
     }
 
     public function lang($locale)

@@ -449,12 +449,13 @@ export default {
       user.set("taxiColor", driver.taxiNo);
       user.set("taxiNo", driver.taxiNo);
       user.set("firm", { email: driver.firm });
+      user.set("agent", this.auth.parent.agent);
+
       user.set("active", 0);
 
       user
         .signUp()
         .then((user) => {
-          console.log(user.id);
           if (typeof document !== "undefined") {
             axios.post(
               CONFIG.API_URL +

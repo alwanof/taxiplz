@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('start');
 
-Route::get('/create/{office}/{name?}/{phone?}/{address?}', 'StartController@create')->name('start.craete');
+Route::get('/create/{office?}/{name?}/{phone?}/{address?}', 'StartController@create')->name('start.craete');
 
 Route::post('/order/compose', 'StartController@compose')->name('order.compose');
 
@@ -41,4 +41,5 @@ Route::prefix('admin')->group(function () {
     Route::get('/settings', 'ConfigController@settings')->name('config.settings');
     Route::get('/drivers', 'DriverController@index')->name('drivers.index');
     Route::get('drivers/profile/{driver}', 'DriverController@profile')->name('drivers.profile');
+    Route::get('/members', 'UserController@members')->name('users.members');
 });
