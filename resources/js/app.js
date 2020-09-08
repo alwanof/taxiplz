@@ -23,6 +23,8 @@ var client = new Parse.LiveQueryClient({
 //************************* */
 
 window.Vue = require('vue');
+
+
 import VueNativeNotification from 'vue-native-notification'
 
 Vue.use(VueNativeNotification, {
@@ -38,6 +40,8 @@ Vue.use(VueGoogleMaps, {
     },
 });
 Vue.use(require('vue-moment'));
+
+
 
 import translations from '../lang/vue-translations.json'
 //php artisan lang:js resources/lang/vue-translations.json --json

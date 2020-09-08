@@ -243,6 +243,7 @@
 </template>
 
 <script>
+import Axios from "axios";
 import CONFIG from "../../app";
 
 export default {
@@ -286,6 +287,7 @@ export default {
     driversFeed(order) {
       this.findingDrivers = true;
       this.drivers = [];
+      //alert("hi");
       const drivers = CONFIG.PARSE.Object.extend("User");
       const query = new CONFIG.PARSE.Query(drivers);
       query.equalTo("active", 0);
@@ -543,9 +545,7 @@ export default {
           },
           {
             headers: {
-              "Content-Type": "application/json",
-              Referer: "https://marasiel.com/",
-              Origin: "https://marasiel.com/",
+              "content-type": "application/json",
               Authorization:
                 "key=AAAAAM6DuQo:APA91bG88dJ6IZ2GULlgR-goGhxI9cVaKRB3x9GT1CQ8R52z_rkBalZqohnCWNC_lD0yE2fPG5nB83HQTqFVVihKsvv4i-9ZPgQzPlKWxgVwOTmr4PX6gNvoxdK3fmnYkM1KOi9V-i28",
             },
@@ -557,6 +557,7 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+
       this.loading = false;
     },
     async reject(order) {
