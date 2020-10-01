@@ -46,6 +46,13 @@
                     </div>
 
                 </div>
+                <div class="form-group">
+                    <label for="address">Distination:</label>
+                    <input type="text" class="form-control" placeholder="Enter your distination.." id="distination"
+                        name="distination">
+                    <div class="text-muted"><small>Where are you going?</small></div>
+
+                </div>
 
 
                 <button type="submit" class="btn btn-primary">Submit</button>

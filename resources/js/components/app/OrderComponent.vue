@@ -4,42 +4,51 @@
       <div class="card-header text-center" style="background-color: #ffa500">
         <img
           class="img-thumbnail rounded-circle"
-          :src="((feed.data.user) ? feed.data.user.avatar :fullPath+'/storage/users/0.jpg')"
+          :src="
+            feed.data.user
+              ? feed.data.user.avatar
+              : fullPath + '/storage/users/0.jpg'
+          "
           alt="..."
-          style="margin-bottom: -32px;"
+          style="margin-bottom: -32px"
         />
       </div>
       <div class="card-body text-center">
-        <h5 class="card-title font-weight-bold">{{ (feed.data.user) ? feed.data.user.name :'none' }}</h5>
+        <h5 class="card-title font-weight-bold">
+          {{ feed.data.user ? feed.data.user.name : "none" }}
+        </h5>
         <table class="table" v-if="feed.data.status">
           <tr>
             <td>
-              <img :src="fullPath+'/assets/dist/img/fidget-spinner.gif'" width="42" />
-            </td>
-            <td>
               <img
-                :src="fullPath+'/assets/dist/img/analyze.gif'"
+                :src="fullPath + '/assets/dist/img/fidget-spinner.gif'"
                 width="42"
-                v-show="[1,11,2,21,].indexOf(feed.data.status.value)>=0"
-              />
-              <img
-                :src="fullPath+'/assets/dist/img/disappointed.gif'"
-                width="42"
-                v-show="[3,4].indexOf(feed.data.status.value)>=0"
               />
             </td>
             <td>
               <img
-                :src="fullPath+'/assets/dist/img/check-all.gif'"
+                :src="fullPath + '/assets/dist/img/analyze.gif'"
                 width="42"
-                v-show="[11,2,21].indexOf(feed.data.status.value)>=0"
+                v-show="[1, 11, 2, 21].indexOf(feed.data.status.value) >= 0"
+              />
+              <img
+                :src="fullPath + '/assets/dist/img/disappointed.gif'"
+                width="42"
+                v-show="[3, 4].indexOf(feed.data.status.value) >= 0"
               />
             </td>
             <td>
               <img
-                :src="fullPath+'/assets/dist/img/good.gif'"
+                :src="fullPath + '/assets/dist/img/check-all.gif'"
                 width="42"
-                v-show="[2,21].indexOf(feed.data.status.value)>=0"
+                v-show="[11, 2, 21].indexOf(feed.data.status.value) >= 0"
+              />
+            </td>
+            <td>
+              <img
+                :src="fullPath + '/assets/dist/img/good.gif'"
+                width="42"
+                v-show="[2, 21].indexOf(feed.data.status.value) >= 0"
               />
             </td>
           </tr>
@@ -47,13 +56,18 @@
             <td colspan="4">
               <div class="progress">
                 <div
-                  :class="'progress-bar progress-bar-striped bg-'+status(feed.data.status.value).color"
+                  :class="
+                    'progress-bar progress-bar-striped bg-' +
+                    status(feed.data.status.value).color
+                  "
                   role="progressbar"
-                  :style="'width: '+status(feed.data.status.value).per"
+                  :style="'width: ' + status(feed.data.status.value).per"
                   :aria-valuenow="status(feed.data.status.value).perx"
                   aria-valuemin="0"
                   aria-valuemax="100"
-                >{{ status(feed.data.status.value).text }}</div>
+                >
+                  {{ status(feed.data.status.value).text }}
+                </div>
               </div>
             </td>
           </tr>
@@ -64,40 +78,64 @@
               <th>Order NO.</th>
               <th>Date</th>
               <th>
-                <i class="fas fa-cog fa-spin px-2 text-primary" v-show="loading">
-                  <span v-html="forceRender" v-show="false"></span>
-                </i>Status
+                <i
+                  class="fas fa-cog fa-spin px-2 text-primary"
+                  v-show="loading"
+                >
+                  <span v-html="forceRender" v-show="false"></span> </i
+                >Status
               </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>
-                <span v-if="feed.id">#{{ feed.id.substr(feed.id.length - 4) }}</span>
+                <span v-if="feed.id"
+                  >#{{ feed.id.substr(feed.id.length - 4) }}</span
+                >
+              </td>
+              <td>
+                <span v-if="feed.data.timestamp" :title="feed.data.timestamp">{{
+                  feed.data.timestamp | moment("from", "now")
+                }}</span>
               </td>
               <td>
                 <span
-                  v-if="feed.data.timestamp"
-                  :title="feed.data.timestamp"
-                >{{feed.data.timestamp | moment("from", "now")}}</span>
-              </td>
-              <td>
-                <span
-                  :class="'badge badge-'+status(feed.data.status.value).color"
+                  :class="'badge badge-' + status(feed.data.status.value).color"
                   v-if="feed.data.status"
                 >
                   <i
                     class="fas fa-cog fa-spin px-2 text-white"
-                    v-if="feed.data.status.value==0 || feed.data.status.value==1"
+                    v-if="
+                      feed.data.status.value == 0 || feed.data.status.value == 1
+                    "
                   ></i>
-                  {{status(feed.data.status.value).text}}
+                  <span
+                    v-show="feed.data.offer > 0 && feed.data.approved == 0"
+                    >{{ feed.data.offer }}</span
+                  >
+                  <span
+                    v-show="feed.data.offer == 0 || feed.data.approved == 1"
+                    >{{ status(feed.data.status.value).text }}</span
+                  >
                 </span>
+              </td>
+              <td>
+                <button
+                  v-show="feed.data.offer > 0 && feed.data.approved == 0"
+                  class="btn btn-sm btn-outline-success"
+                  type="button"
+                  @click="accept(feed)"
+                >
+                  Accept
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
         <div v-if="feed.data.driver">
-          <table class="table" v-if="feed.data.status.value==11">
+          <table class="table" v-if="feed.data.status.value == 11">
             <tr class="table-success border border-danger">
               <td>
                 <img
@@ -108,18 +146,24 @@
                 />
               </td>
               <td>
-                {{feed.data.driver.name}}
+                {{ feed.data.driver.name }}
                 <br />
-                <a :href="'tel:'+feed.data.driver.phone">{{feed.data.driver.phone}}</a>
+                <a :href="'tel:' + feed.data.driver.phone">{{
+                  feed.data.driver.phone
+                }}</a>
               </td>
-              <td>{{feed.data.driver.taxi}} {{feed.data.driver.taxiColor}}</td>
+              <td>
+                {{ feed.data.driver.taxi }} {{ feed.data.driver.taxiColor }}
+              </td>
               <td>
                 <button
                   type="button"
                   class="btn btn-danger"
                   :disabled="!!feed.data.enableTracking"
                   @click="trackDriver(feed)"
-                >Tracking</button>
+                >
+                  Tracking
+                </button>
               </td>
             </tr>
           </table>
@@ -132,7 +176,7 @@
             :center="center"
             :zoom="10"
             :draggable="true"
-            style="width: 100%;height:400px"
+            style="width: 100%; height: 400px"
           >
             <GmapMarker
               :clickable="true"
@@ -140,14 +184,20 @@
               :icon="markers.icon"
               :position="markers.position"
             >
-              <gmap-info-window :position="markers.position" :opened="markers.open">{{markers.name}}</gmap-info-window>
+              <gmap-info-window
+                :position="markers.position"
+                :opened="markers.open"
+                >{{ markers.name }}</gmap-info-window
+              >
             </GmapMarker>
             <GmapMarker
               :name="request.name"
               :icon="fullPath + '/assets/dist/img/location.png'"
               :position="center"
             >
-              <gmap-info-window :position="center" :opened="true">{{request.name}}</gmap-info-window>
+              <gmap-info-window :position="center" :opened="true">{{
+                request.name
+              }}</gmap-info-window>
             </GmapMarker>
           </GmapMap>
         </div>
@@ -211,6 +261,17 @@ export default {
         toastr["error"]("Get Order Fail", error);
       }
     },
+    accept(order) {
+      this.loading = true;
+      const orders = CONFIG.PARSE.Object.extend("orders");
+      const query = new CONFIG.PARSE.Query(orders);
+      query.get(order.id).then((object) => {
+        object.set("approved", 1);
+        object.save();
+      });
+      this.loading = false;
+      this.offer = 0;
+    },
     async sendOrder() {
       if (!this.valid(this.request)) {
         toastr["error"]("error0", "NOT Valid!!");
@@ -231,11 +292,14 @@ export default {
           order.enableTracking = 0;
           order.timestamp = new Date();
           order.type = 0;
+          order.offer = 0;
+          order.approved = 0;
 
           order.customer = {
             name: this.request.name,
             phone: this.request.phone,
             address: this.request.address,
+            distination: this.request.distination,
             location: this.center,
           };
           order.agent = this.request.agentEmail;

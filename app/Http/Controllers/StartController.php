@@ -70,6 +70,7 @@ class StartController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'agentEmail' => $request->agentEmail,
+            'distination' => $request->distination
 
         ];
         return view('orders.compose', compact(['data']));

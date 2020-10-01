@@ -26,6 +26,7 @@
         "parse": "^2.15.0",
         "vue-moment": "^4.1.0",
         "vue-native-notification": "^1.1.1",
+        "vue-resource": "^1.5.1",
         "vue2-google-maps": "^0.10.7"
     }
 }

@@ -13,12 +13,12 @@
 @endsection
 @section('content')
     <!-- Default box -->
+
     <div class="container">
 
         <home :acl="{{ json_encode($acl) }}" :geo="{{ json_encode($geo) }}" :lang={{ json_encode(app()->getLocale()) }}
-            :auth="{{ json_encode(Auth::user()) }}"></home>
-
-
+            :auth="{{ json_encode(Auth::user()) }}"
+            :currency="{{ json_encode(Auth::user()->getSetting('currency')->value) }}"></home>
     </div>
 
     <!-- /.card -->

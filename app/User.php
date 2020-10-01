@@ -55,6 +55,7 @@ class User extends Authenticatable
         $avatar = ($path) ? asset('storage/users/' . $this->id . '.jpg') : asset('storage/users/0.jpg');
         return $avatar;
     }
+
     public function getRefuserAttribute()
     {
         if ($this->ref == 0) {

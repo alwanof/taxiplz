@@ -24,6 +24,12 @@ var client = new Parse.LiveQueryClient({
 
 window.Vue = require('vue');
 
+var VueResource = require('vue-resource');
+Vue.use(VueResource);
+Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
+Vue.http.headers.common['Access-Control-Request-Method'] = '*';
+
+
 
 import VueNativeNotification from 'vue-native-notification'
 
@@ -77,6 +83,7 @@ if (location.protocol !== 'https:') {
 }
 // ssh root@142.93.174.231
 // cd /home/marasiel.com/public_html/taxiplzz
+//Zoom+9314MU
 const CONFIG = {
 
     /*API_URL: http + window.location.hostname + '/taxi/public/api/',

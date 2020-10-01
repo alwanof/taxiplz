@@ -1,14 +1,89 @@
 <template>
   <div>
     <div class="row">
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>
+              {{ metrics.inorders }}
+              <small>
+                {{ metrics.totalin }}
+                <sup v-show="auth.level > 0">{{ currency }}</sup>
+              </small>
+            </h3>
+
+            <p>Orders(in)</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-bag"></i>
+          </div>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>
+              {{ metrics.outorders }}
+              <small>
+                {{ metrics.totalout }}
+                <sup v-show="auth.level > 0">{{ currency }}</sup>
+              </small>
+            </h3>
+
+            <p>Orders(out)</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h3>{{ metrics.driverson }}</h3>
+
+            <p>Drivers On</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-person-add"></i>
+          </div>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3>{{ metrics.driversoff }}</h3>
+
+            <p>Drivers Off</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+          </div>
+        </div>
+      </div>
+      <!-- ./col -->
+    </div>
+    <div class="row">
       <div class="col-lg-12">
-        <div class="card card-primary card-outline" v-if="acl.access_drivers_map">
+        <div
+          class="card card-primary card-outline"
+          v-if="acl.access_drivers_map"
+        >
           <div class="card-header">
             <button
               type="button"
               class="btn btn-danger float-right"
               @click="trackDrivers()"
-            >Tracking</button>
+            >
+              Tracking
+            </button>
           </div>
           <div class="card-body">
             <GmapMap
@@ -16,7 +91,7 @@
               :center="center"
               :zoom="10"
               :draggable="true"
-              style="width: 100%;height:400px"
+              style="width: 100%; height: 400px"
             >
               <GmapMarker
                 :clickable="true"
@@ -26,7 +101,9 @@
                 :icon="marker.icon"
                 :position="marker.position"
               >
-                <gmap-info-window :position="marker.position" :opened="true">{{marker.name}}</gmap-info-window>
+                <gmap-info-window :position="marker.position" :opened="true">{{
+                  marker.name
+                }}</gmap-info-window>
               </GmapMarker>
             </GmapMap>
           </div>
@@ -34,7 +111,10 @@
       </div>
 
       <!-- hot Orders sheet -->
-      <div class="card card-danger card-outline col-lg-12" v-if="acl.access_orders_sheet">
+      <div
+        class="card card-danger card-outline col-lg-12"
+        v-if="acl.access_orders_sheet"
+      >
         <div class="card-header">
           <i class="fas fa-cog fa-spin px-2 text-primary" v-show="loading"></i>
           <span v-html="forceRender" v-show="false"></span>
@@ -45,7 +125,7 @@
                 name="table_search"
                 v-model="keywords"
                 class="form-control float-right"
-                :placeholder=" local[lang+'.users']['search'] "
+                :placeholder="local[lang + '.users']['search']"
               />
 
               <div class="input-group-append">
@@ -73,33 +153,43 @@
               <tr
                 v-for="order in hotOrders"
                 :key="order.id"
-                :class="'table-'+status(order.data.status.value).color"
+                :class="'table-' + status(order.data.status.value).color"
               >
                 <td>{{ order.id.substr(order.id.length - 4) }}</td>
-                <td>{{order.data.customer.name}}</td>
-                <td>{{order.data.customer.phone}}</td>
+                <td>{{ order.data.customer.name }}</td>
+                <td>{{ order.data.customer.phone }}</td>
+                <td>
+                  <span :title="order.data.customer.address">{{
+                    order.data.customer.address.substring(
+                      order.data.customer.address.length - 15,
+                      15
+                    )
+                  }}</span>
+                </td>
+                <td :title="order.data.status.timestamp">
+                  {{ order.data.status.timestamp | moment("from", "now") }}
+                </td>
                 <td>
                   <span
-                    :title="order.data.customer.address"
-                  >{{order.data.customer.address.substring(order.data.customer.address.length-15, 15)}}</span>
-                </td>
-                <td
-                  :title="order.data.status.timestamp"
-                >{{order.data.status.timestamp | moment("from", "now")}}</td>
-                <td>
-                  <span v-show="[0,12,13].indexOf(order.data.status.value) >= 0">
+                    v-show="[0, 12, 13].indexOf(order.data.status.value) >= 0"
+                  >
                     <div class="input-group">
                       <select
                         class="form-control"
                         v-model="driver"
                         @click="driversFeed(order.data)"
                       >
-                        <option value="0" disabled selected>Seelct Driver</option>
+                        <option value="0" disabled selected>
+                          Seelct Driver
+                        </option>
                         <option
                           v-for="driver in drivers"
                           :key="driver.id"
                           :value="driver.id"
-                        >{{ driver.data.taxiCode }} | {{ driver.data.name }} {{driver.distance}}km</option>
+                        >
+                          {{ driver.data.taxiCode }} | {{ driver.data.name }}
+                          {{ driver.distance }}km
+                        </option>
                       </select>
                       <span class="input-group-btn">
                         <button
@@ -108,8 +198,14 @@
                           @click="pickUp(order)"
                           tabindex="-1"
                         >
-                          <i class="fas fa-angle-double-right" v-show="!findingDrivers"></i>
-                          <i class="fas fa-cog fa-spin px-2 text-primary" v-show="findingDrivers"></i>
+                          <i
+                            class="fas fa-angle-double-right"
+                            v-show="!findingDrivers"
+                          ></i>
+                          <i
+                            class="fas fa-cog fa-spin px-2 text-primary"
+                            v-show="findingDrivers"
+                          ></i>
                         </button>
                         <button
                           class="btn btn-danger"
@@ -126,8 +222,11 @@
                 <td>
                   <span>
                     <span
-                      :class="'badge badge-'+status(order.data.status.value).color"
-                    >{{ status(order.data.status.value).text }}</span>
+                      :class="
+                        'badge badge-' + status(order.data.status.value).color
+                      "
+                      >{{ status(order.data.status.value).text }}</span
+                    >
                   </span>
                 </td>
               </tr>
@@ -137,7 +236,10 @@
       </div>
       <!-- /hotOrders -->
 
-      <div class="card card-primary card-outline col-lg-12" v-if="acl.access_orders_sheet">
+      <div
+        class="card card-primary card-outline col-lg-12"
+        v-if="acl.access_orders_sheet"
+      >
         <div class="card-header">
           <i class="fas fa-cog fa-spin px-2 text-primary" v-show="loading"></i>
           <span v-html="forceRender" v-show="false"></span>
@@ -148,7 +250,7 @@
                 name="table_search"
                 v-model="keywords"
                 class="form-control float-right"
-                :placeholder=" local[lang+'.users']['search'] "
+                :placeholder="local[lang + '.users']['search']"
               />
 
               <div class="input-group-append">
@@ -176,33 +278,47 @@
               <tr
                 v-for="order in orders"
                 :key="order.id"
-                :class="'table-'+status(order.data.status.value).color"
+                :class="'table-' + status(order.data.status.value).color"
               >
                 <td>{{ order.id.substr(order.id.length - 4) }}</td>
-                <td>{{order.data.customer.name}}</td>
-                <td>{{order.data.customer.phone}}</td>
+                <td>{{ order.data.customer.name }}</td>
+                <td>{{ order.data.customer.phone }}</td>
+                <td>
+                  <span :title="order.data.customer.address">{{
+                    order.data.customer.address.substring(
+                      order.data.customer.address.length - 15,
+                      15
+                    )
+                  }}</span>
+                </td>
+                <td :title="order.data.status.timestamp">
+                  {{ order.data.status.timestamp | moment("from", "now") }}
+                </td>
                 <td>
                   <span
-                    :title="order.data.customer.address"
-                  >{{order.data.customer.address.substring(order.data.customer.address.length-15, 15)}}</span>
-                </td>
-                <td
-                  :title="order.data.status.timestamp"
-                >{{order.data.status.timestamp | moment("from", "now")}}</td>
-                <td>
-                  <span v-show="[0,12,13].indexOf(order.data.status.value) >= 0">
+                    v-show="
+                      [0, 12, 13].indexOf(order.data.status.value) >= 0 &&
+                      (order.data.customer.distination == null ||
+                        order.data.approved == 1)
+                    "
+                  >
                     <div class="input-group">
                       <select
                         class="form-control"
                         v-model="driver"
                         @click="driversFeed(order.data)"
                       >
-                        <option value="0" disabled selected>Seelct Driver</option>
+                        <option value="0" disabled selected>
+                          Seelct Driver
+                        </option>
                         <option
                           v-for="driver in drivers"
                           :key="driver.id"
                           :value="driver.id"
-                        >{{ driver.data.taxiCode }} | {{ driver.data.name }} {{driver.distance}}km</option>
+                        >
+                          {{ driver.data.taxiCode }} | {{ driver.data.name }}
+                          {{ driver.distance }}km
+                        </option>
                       </select>
                       <span class="input-group-btn">
                         <button
@@ -211,8 +327,14 @@
                           @click="pickUp(order)"
                           tabindex="-1"
                         >
-                          <i class="fas fa-angle-double-right" v-show="!findingDrivers"></i>
-                          <i class="fas fa-cog fa-spin px-2 text-primary" v-show="findingDrivers"></i>
+                          <i
+                            class="fas fa-angle-double-right"
+                            v-show="!findingDrivers"
+                          ></i>
+                          <i
+                            class="fas fa-cog fa-spin px-2 text-primary"
+                            v-show="findingDrivers"
+                          ></i>
                         </button>
                         <button
                           class="btn btn-danger"
@@ -225,12 +347,42 @@
                       </span>
                     </div>
                   </span>
+                  <!-- offer -->
+                  <span
+                    v-show="
+                      [0, 12, 13].indexOf(order.data.status.value) >= 0 &&
+                      order.data.customer.distination != null &&
+                      order.data.offer == 0
+                    "
+                  >
+                    <div class="input-group mb-3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Your offer.."
+                        v-model="offer"
+                      />
+                      <div class="input-group-prepend">
+                        <button
+                          class="btn btn-outline-success"
+                          type="button"
+                          id="button-addon1"
+                          @click="sendOffer(order)"
+                        >
+                          Send
+                        </button>
+                      </div>
+                    </div>
+                  </span>
                 </td>
                 <td>
                   <span>
                     <span
-                      :class="'badge badge-'+status(order.data.status.value).color"
-                    >{{ status(order.data.status.value).text }}</span>
+                      :class="
+                        'badge badge-' + status(order.data.status.value).color
+                      "
+                      >{{ status(order.data.status.value).text }}</span
+                    >
                   </span>
                 </td>
               </tr>
@@ -248,7 +400,7 @@ import CONFIG from "../../app";
 
 export default {
   name: "HomeComponent",
-  props: ["acl", "lang", "auth", "geo"],
+  props: ["acl", "lang", "auth", "geo", "currency"],
   data() {
     return {
       path: CONFIG.PATH,
@@ -261,6 +413,15 @@ export default {
       hotOrders: [],
       drivers: [],
       driver: 0,
+      offer: 0,
+      metrics: {
+        outorders: 0,
+        inorders: 0,
+        driverson: 0,
+        driversoff: 0,
+        totalin: 0,
+        totalout: 0,
+      },
       center: {
         lat: 41.1374382,
         lng: 28.7547977,
@@ -269,9 +430,13 @@ export default {
       forceRender: 0,
     };
   },
-  created() {
+  async created() {
     this.listen();
     //this.geolocation();
+    this.getOrdersMetrics("in");
+    this.getOrdersMetrics("out");
+    this.getDriverssMetrics("on");
+    this.getDriverssMetrics("off");
 
     this.getResults();
     this.getHotResults();
@@ -496,23 +661,74 @@ export default {
       });
     },
 
-    /*getResults() {
-      this.loading = true;
-      let query;
-      query = CONFIG.DB.collection("orders");
-      query.onSnapshot((snap) => {
-        if (snap.size == 0) {
-          this.loading = false;
+    async getOrdersMetrics(metric) {
+      const orders = CONFIG.PARSE.Object.extend("orders");
+      const query = new CONFIG.PARSE.Query(orders);
+      if (metric == "in") {
+        query.equalTo("type", 0);
+      } else {
+        query.equalTo("type", 1);
+      }
+      switch (this.auth.level) {
+        case 2:
+          query.equalTo("user.email", this.auth.email);
+          break;
+        case 1:
+          query.equalTo("agent", this.auth.email);
+          break;
+        case 0:
+          break;
 
-          return 0;
-        }
-        this.orders = [];
-        snap.forEach((doc) => {
-          this.orders.push(doc.data());
-        });
-        this.loading = false;
+        default:
+          query.equalTo("user.email", "foo@foo.com");
+          break;
+      }
+
+      let ordersData = await query.find();
+      let totalOffers = 0;
+      ordersData.forEach((item) => {
+        totalOffers = totalOffers + item.attributes.offer;
       });
-    },*/
+
+      if (metric == "in") {
+        this.metrics.inorders = ordersData.length;
+        this.metrics.totalin = totalOffers;
+      } else {
+        this.metrics.outorders = ordersData.length;
+        this.metrics.totalout = totalOffers;
+      }
+    },
+    async getDriverssMetrics(metric) {
+      const users = CONFIG.PARSE.Object.extend("User");
+      const query = new CONFIG.PARSE.Query(users);
+      if (metric == "on") {
+        query.equalTo("active", 1);
+      } else {
+        query.equalTo("active", 0);
+      }
+      switch (this.auth.level) {
+        case 2:
+          query.equalTo("firm.email", this.auth.email);
+          break;
+        case 1:
+          query.equalTo("agent.email", this.auth.email);
+          break;
+        case 0:
+          break;
+
+        default:
+          query.equalTo("firm.email", "foo@foo.com");
+          break;
+      }
+
+      let ordersData = await query.find();
+
+      if (metric == "on") {
+        this.metrics.driverson = ordersData.length;
+      } else {
+        this.metrics.driversoff = ordersData.length;
+      }
+    },
     pickUp: async function (order) {
       this.loading = true;
 
@@ -562,7 +778,7 @@ export default {
     },
     async reject(order) {
       this.loading = true;
-      let index = this.drivers.findIndex((o) => o.id === this.driver);
+      //let index = this.drivers.findIndex((o) => o.id === this.driver);
       const orders = CONFIG.PARSE.Object.extend("orders");
       const query = new CONFIG.PARSE.Query(orders);
       await query.get(order.id).then((object) => {
@@ -570,6 +786,17 @@ export default {
         object.save();
       });
       this.loading = false;
+    },
+    async sendOffer(order) {
+      this.loading = true;
+      const orders = CONFIG.PARSE.Object.extend("orders");
+      const query = new CONFIG.PARSE.Query(orders);
+      await query.get(order.id).then((object) => {
+        object.set("offer", Number(this.offer));
+        object.save();
+      });
+      this.loading = false;
+      this.offer = 0;
     },
     search() {},
     trackDrivers: async function () {
