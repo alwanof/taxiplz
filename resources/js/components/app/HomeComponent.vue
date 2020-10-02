@@ -144,6 +144,7 @@
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Address</th>
+                <th>Destination</th>
                 <th>Date</th>
                 <th>Action</th>
                 <th>Status</th>
@@ -166,6 +167,15 @@
                     )
                   }}</span>
                 </td>
+                <td>
+                  <span :title="order.data.customer.distination">{{
+                    order.data.customer.distination.substring(
+                      order.data.customer.distination.length - 15,
+                      15
+                    )
+                  }}</span>
+                </td>
+
                 <td :title="order.data.status.timestamp">
                   {{ order.data.status.timestamp | moment("from", "now") }}
                 </td>
@@ -269,6 +279,7 @@
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Address</th>
+                <th>Destination</th>
                 <th>Date</th>
                 <th>Action</th>
                 <th>Status</th>
@@ -287,6 +298,14 @@
                   <span :title="order.data.customer.address">{{
                     order.data.customer.address.substring(
                       order.data.customer.address.length - 15,
+                      15
+                    )
+                  }}</span>
+                </td>
+                <td>
+                  <span :title="order.data.customer.distination">{{
+                    order.data.customer.distination.substring(
+                      order.data.customer.distination.length - 15,
                       15
                     )
                   }}</span>
