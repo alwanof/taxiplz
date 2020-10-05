@@ -44,4 +44,5 @@ Route::prefix('admin')->group(function () {
     Route::get('/drivers', 'DriverController@index')->name('drivers.index');
     Route::get('drivers/profile/{driver}', 'DriverController@profile')->name('drivers.profile');
     Route::get('/members', 'UserController@members')->name('users.members');
+    Route::get('/history', 'DriverController@history')->name('drivers.history');
 });

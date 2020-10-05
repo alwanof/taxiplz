@@ -30,4 +30,9 @@ class DriverController extends Controller
             abort(403);
         }
     }
+
+    public function history()
+    {
+        return view('drivers.history');
+    }
 }

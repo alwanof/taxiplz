@@ -87,6 +87,11 @@ Vue.component(
     require("./components/app/MembersSheetComponent.vue").default
 );
 
+Vue.component(
+    "history",
+    require("./components/app/HistoryComponent.vue").default
+);
+
 function coolNumber(num) {
     if (num < 1000) {
         return $num;
@@ -109,9 +114,9 @@ if (location.protocol !== "https:") {
 // scp narabana.com.zip root@142.93.174.231:/home/narabana.com/public_html
 //Zoom+9314MU
 const CONFIG = {
-    /*API_URL: http + window.location.hostname + '/taxi/public/api/',
-    PATH: '/taxi/public',
-    FULL_PATH: 'http://' + window.location.hostname + '/taxi/public',*/
+    /*API_URL: http + window.location.hostname + "/taxi/public/api/",
+    PATH: "/taxi/public",
+    FULL_PATH: "http://" + window.location.hostname + "/taxi/public",*/
     API_URL: http + window.location.hostname + "/taxiplzz/public/api/",
     PATH: "/taxiplzz/public",
     FULL_PATH: http + window.location.hostname + "/taxiplzz/public",

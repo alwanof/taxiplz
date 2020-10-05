@@ -107,7 +107,7 @@
                             alt="User Image">
                     </div>
                     <div class="info">
-                         <a href="{{ route('me') }}" class="d-block">{{ Auth::user()->name }}</a>
+                        <a href="{{ route('me') }}" class="d-block">{{ Auth::user()->name }}</a>
 
                     </div>
 
@@ -184,6 +184,17 @@
                                 </a>
                             </li>
                         @endcan
+                        @can('access_history')
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('drivers.history') }}">
+                                    <i class="nav-icon fas fa-taxi"></i>
+                                    <p>
+                                        {{ __('drivers.history.title') }}
+
+                                    </p>
+                                </a>
+                            </li>
+                        @endcan
 
                         <hr>
                         <li class="nav-item">
@@ -201,7 +212,9 @@
                             <div class="visible-print text-center">
                                 <a href="{{ url('/create/' . Auth::user()->email) }}" target="_blank">
 
-                                    <img class="img-fluid" src="data:image/png;base64,{{ base64_encode(QrCode::format('png')->color(255, 50, 50)->size(512)->generate(url('/create/' . Auth::user()->email))) }}">
+                                    <img class="img-fluid" src="data:image/png;base64,{{ base64_encode(
+                                        QrCode::format('png')->color(255, 50, 50)->size(512)->generate(url('/create/' . Auth::user()->email)),
+                                    ) }}">
 
                                 </a>
                             </div>
