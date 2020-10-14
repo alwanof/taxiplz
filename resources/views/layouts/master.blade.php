@@ -80,7 +80,7 @@
                 </li>
                 @switch($locale)
                     @case('ar')
-                    <i class="flag-icon flag-icon-sa"></i>
+                    <i class="flag-icon flag-icon-sy"></i>
                     @break
                     @default
                     <i class="flag-icon flag-icon-us"></i>
