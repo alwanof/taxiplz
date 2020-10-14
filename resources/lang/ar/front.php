@@ -2,11 +2,11 @@
 
 return [
     'general'=>[
-        'alt'=>'Meaza Food',
-        'title'=>'Meaza Food',
+        'alt'=>'تاكسي',
+        'title'=>'تاكسي',
     ],
     'languages'=>[
-        'title'=>'اللغات',
+        'title'=>'اللغة',
         'عربي',
         'english',
         'አማርኛ',
@@ -14,20 +14,20 @@ return [
         'swdish',
         'Deutschland'
     ],
-    'title'=>'Meaza Food',
+    'title'=>'تاكسي',
     'default_page_name'=>'الرئيسية',
     'menu'=>[
         'menu_01'=>'الرئيسية',
-        'menu_02'=>'من نحن',
+        'menu_02'=>'حول',
         'menu_03'=>'المنتجات',
-        'menu_04'=>'تواصل معنا',
-        'menu_05'=>'الوكلاء'
+        'menu_04'=>'اتصال',
+        'menu_05'=>'عملاء'
     ],
     'slider'=>[
         'slider_01'=>[
-            'title_0'=>'Welcome',
-            'title_01'=>'To The Meaza Food',
-            'description'=>'Itaque voluptatem accusamus non quidem, deleniti optio.Itaque voluptatem accusamus non quidem, deleniti optio.',
+            'title_0'=>'أهلا بك',
+            'title_01'=>'في مراسيل',
+            'description'=>'استخدم برنامج مراسيل الخاص بنا لزيادة الكفاءة وتجاوز توقعات العملاء . مراسيل تقدم حلول مبتكرة لشركات سيارات الأجرة .',
         ],
         'slider_02'=>[
             'title_0'=>'The Elegant',
@@ -42,30 +42,21 @@ return [
 
         ],
     ],
+    'specific_keyword'=>'Discover',
     'about'=>[
-        'about_us_title'=>'من نحن',
-        'content'=>'"مآزا" شركة متخصصة في إعداد الأطعمة الشرق/أفريقية "الحبشية" الجاهزة وشبه الجاهزة. وتركِّز منتجاتنا اهتمامها، بشكل رئيس على ما يُعْرَف بـ "المطبخ الحبشي" وتحديداً على "الحَرّاق/اللاذع" منها مثل "الزِّقْني، المعكرونة والشويبس "شرائح البطاطس" وما شاكلها، بالطريقة التي تحافظ فيها على قيمتها الغذائية من دون التأثير على عنصري الطزاجة والسلامة.',
-        'vision_title'=>'رؤيتنا:',
-        'vision_content'=>'مواكبة وتيرة العولمة المتسارعة لإيقاع أسلوب الحياة في عالمنا الحالي من غير التخلي عن الخصائص الثقافية المميزة لنا.
-تنمية الاحساس بالذائقة، النكهة والمزاج بحيث يظل الانسان متصلاً ومتواصلاً بالجزيئات المشكِّلة لخصائصه الثقافية الفريدة.
-',
-        'mission_title'=>'رسالتنا:',
-        'mission_content'=>'الاستفادة من الوقت والجهد المبذولين في إعداد وجبتك المفضَّلة وفي الوقت نفسه تَجَنُّب الآثار السالبة على البيئة والسلامة.
-أن تأتيك وجبتك المفضَّلة أينما وحيثما أردت.
-',
-        'objectives_title'=>'أهدافنا:',
-        'objectives_content'=>'أن نواظب على الارتقاء كمؤسسة تصنع الفرق في مجال الصناعات الغذائية.
-التأسيس لوسائل مغايرة ومبتكرة للتواصل بين "مواطني العالم" بما يُثْري فهمهم/تفهمهم المتبادَل لكونهم صُنَّاعاً لحضارتهم هذه وليسو "مجرَّد مستَهلِكين".
-أن تظل "مآزا" مساهماً فاعلاً في ترقية الوعي بأسلوب "غذائي" سليم يساعد في الحفاظ على صحة البيئة.
-',
-        'values_title'=>'قيمنا:',
-        'values_content'=>'مراعاة التنوع الحيوي والحفاظ على التوازن البيئي يأتي على رأس أولوياتنا.
-التشديد على أهمية المنتجات الغذائية العضوية باعتبارها صديقة للانسان والبيئة.
-الاانتباه إلى مأزق المعادلة الصعبة بين الربح والنزاهة في مجال الصناعة الغذائية.
-',
+        'about_us_title'=>'about us',
+        'content'=>'MEAZA specializes in East African “Habasha” prepared and partially prepared food. Our products mainly focus on the “Habasha Cuisine” particularly the spicy of them “Zigni, Pasta, chips, etc. in a way that maintains its nutritional value along with freshness and safety.',
+        'vision_title'=>'Vision:',
+        'vision_content'=>'To keep up with the global nature of today world’s life-style tempo without the dismissal of unique cultural features.To help you to stay connected with the taste, flavor and mood that keep you in touch with your uniqueness.',
+        'mission_title'=>'Mission:',
+        'mission_content'=>'To save you time and effort of preparing your favorite meal, not to mention other environmental and safety side effects.To bring your own or favorite meal to you at the time and place you choose.',
+        'objectives_title'=>'Objectives:',
+        'objectives_content'=>'To grow as a difference-making leading company in the domain of food industry. To start a real different and innovative means of communications between the citizens of our globe that may enrich their mutual understanding of being the genuine makers of their own civilization rather than merely consumers.To stand as a prominent contributer to the international efforts to preserve environmental health and sound hygienic life style.',
+        'values_title'=>'Values:',
+        'values_content'=>'Preserving biodiversity and maintaining the ecosystems balance is on the top.To emphasize the importance of the human and environment friendly organic food. To deal carefully with the hard equation of business vs integrity.',
     ],
     'products'=>[
-        'section_title'=>'منتجاتنا',
+        'section_title'=>'Our Products',
         'product_01'=>[
             'title'=>'Berbere Tomato Sause',
             'description'=>'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'
@@ -80,10 +71,10 @@ return [
         ]
     ],
     'contact'=>[
-        'specific_keyword'=>'اكتشف المزيد',
-        'title'=>'تواصل معنا',
+        'specific_keyword'=>'Get In Touch',
+        'title'=>'Contact Us',
         'address'=>[
-            'title'=>'العنوان :',
+            'title'=>'Official Address',
             'content'=>'Divan Residence at Bomonti Plaza Cumhuriyet, Harika Sk. No: 4, 34380 Şişli/İstanbul',
         ],
         'tel'=>'+90 531 892 74 13',

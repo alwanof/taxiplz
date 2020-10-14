@@ -1,10 +1,10 @@
 <?php
 return [
-    'title' => 'Member manager',
-    'select_role' => 'User Role',
-    'name' => 'Name',
-    'email' => 'Email',
-    'level' => 'Level',
-    'parent' => 'Parent'
+    'title' => 'مدير الأعضاء',
+    'select_role'=>'دور المستخدم',
+    'name'=>'اسم',
+    'email'=>'البريد الإلكتروني',
+    'level'=>'المستوى',
+    'parent'=>'أصل'
 
 ];

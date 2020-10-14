@@ -1,14 +1,16 @@
 <?php
 
-
-
 return [
-    'dashboard' => 'لوحة التحكم',
+    'dashboard' => 'نظام التحكم',
     'home' => 'الرئيسية',
-    'users' => 'Users',
-    'logout' => 'Logout',
-    'goodBye' => 'Good Bye!',
-    'select-language' => 'اختر اللغة'
-
+    'users' => 'المستخدمون',
+    'config' => 'التكوينات',
+    'settings' => 'الإعدادات',
+    'logout' => 'تسجيل خروج',
+    'goodBye' => 'وداعا!',
+    'select-language' => 'اختر اللغة',
+    'modules'=>'تطبيق. الوحدات',
+    'desktop'=>'سطح المكتب',
+    'drivers'=>'السائقين'
 
 ];
